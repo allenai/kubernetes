@@ -1,19 +1,3 @@
-/*
-Copyright 2015 The Kubernetes Authors.
-
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-    http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-*/
-
 // The SpecRequirements package contains an admission controller that ensures that resources created or updated by
 // human cluster users meet two criteria:
 // - they have a contact label
@@ -101,7 +85,7 @@ func (a *specRequirements) Admit(attributes admission.Attributes) (err error) {
 	return nil
 }
 
-//Returns true if the given object has a contact label - not case-sensitive - in its metadata, false otherwise.
+//Returns the value of the contact label if the resource has a contact label, the empty string otherwise.
 func HasContact(resource runtime.Object) string {
 	accessor := meta.NewAccessor()
 	labels, _ := accessor.Labels(resource)
@@ -127,7 +111,6 @@ func PropagateLabel(template *api.PodTemplateSpec, contact string) {
 func HasResourceRequests(containers []api.Container) bool {
 	requestsPresent := true
 
-	//containers := append(template.Spec.Containers, template.Spec.InitContainers...)
 	for _, container := range containers{
 		requests := container.Resources.Requests
 		_, mem := requests[api.ResourceMemory]
